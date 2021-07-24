@@ -20,13 +20,13 @@ def drawBoard(board):
 
 def inputPlayerLetter():
     # Lets the player type which letter they want to be.
-    # Returns a list with the player's letter as the first item, and the computer's letter as the second.
+    # Returns a list with the player's letter as the first item, and the second player's letter as the second.
     letter = ''
     while not (letter == 'X' or letter == 'O'):
         print('Do you want to be X or O?')
         letter = input().upper()
 
-    # the first element in the tuple is the player's letter, the second is the computer's letter.
+    # the first element in the tuple is the player's letter, the second is the player 2's letter.
     if letter == 'X':
         return ['X', 'O']
     else:
@@ -94,7 +94,7 @@ def chooseRandomMoveFromList(board, movesList):
         return None
 
 def getPlayer2Move(board, player2Letter):
-    # Given a board and the computer's letter, determine where to move and return that move.
+    # Given a board and the player 2's letter, determine where to move and return that move.
     if player2Letter == 'X':
         playerLetter = 'O'
     else:
@@ -105,8 +105,8 @@ def getPlayer2Move(board, player2Letter):
     for i in range(1, 10):
         copy = getBoardCopy(board)
         if isSpaceFree(copy, i):
-            makeMove(copy, computerLetter, i)
-            if isWinner(copy, computerLetter):
+            makeMove(copy, player2Letter, i)
+            if isWinner(copy, player2Letter):
                 return i
 
     # Check if the player could win on his next move, and block them.
@@ -144,7 +144,7 @@ while True:
     theBoard = [' '] * 10
     playerLetter, player2Letter = inputPlayerLetter()
     turn = whoGoesFirst()
-    print('The ' + turn + ' will go first.')
+    print('The' + turn + ' will go first.')
     gameIsPlaying = True
 
     while gameIsPlaying:
@@ -169,7 +169,7 @@ while True:
         else:
             # Player2's turn.
             move = getPlayer2Move(theBoard, player2Letter)
-            makeMove(theBoard, computerLetter, move)
+            makeMove(theBoard, player2Letter, move)
 
             if isWinner(theBoard, player2Letter):
                 drawBoard(theBoard)
@@ -185,4 +185,3 @@ while True:
 
     if not playAgain():
         break
-#hellothisishreya
