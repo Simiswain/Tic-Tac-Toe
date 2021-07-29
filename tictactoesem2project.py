@@ -20,13 +20,13 @@ def drawBoard(board):
 
 def inputPlayerLetter():
     # Lets the player type which letter they want to be.
-    # Returns a list with the player's letter as the first item, and the computer's letter as the second.
+    # Returns a list with the player's letter as the first item, and the second player's letter as the second.
     letter = ''
     while not (letter == 'X' or letter == 'O'):
         print('Do you want to be X or O?')
         letter = input().upper()
 
-    # the first element in the tuple is the player's letter, the second is the computer's letter.
+    # the first element in the tuple is the player's letter, the second is the player 2's letter.
     if letter == 'X':
         return ['X', 'O']
     else:
@@ -94,47 +94,16 @@ def chooseRandomMoveFromList(board, movesList):
         return None
 
 def getPlayer2Move(board, player2Letter):
-    # Given a board and the computer's letter, determine where to move and return that move.
+    # Let the player type in his move.
     if player2Letter == 'X':
         playerLetter = 'O'
     else:
         playerLetter = 'X'
-
-    # Here is our algorithm for our Tic Tac Toe AI:
-    # First, check if we can win in the next move
-    for i in range(1, 10):
-        copy = getBoardCopy(board)
-        if isSpaceFree(copy, i):
-            makeMove(copy, computerLetter, i)
-            if isWinner(copy, computerLetter):
-                return i
-
-    # Check if the player could win on his next move, and block them.
-    for i in range(1, 10):
-        copy = getBoardCopy(board)
-        if isSpaceFree(copy, i):
-            makeMove(copy, playerLetter, i)
-            if isWinner(copy, playerLetter):
-                return i
-
-    # Try to take one of the corners, if they are free.
-    move = chooseRandomMoveFromList(board, [1, 3, 7, 9])
-    if move != None:
-        return move
-
-    # Try to take the center, if it is free.
-    if isSpaceFree(board, 5):
-        return 5
-
-    # Move on one of the sides.
-    return chooseRandomMoveFromList(board, [2, 4, 6, 8])
-
-def isBoardFull(board):
-    # Return True if every space on the board has been taken. Otherwise return False.
-    for i in range(1, 10):
-        if isSpaceFree(board, i):
-            return False
-    return True
+    move = ' '
+    while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
+        print('What is your next move? (1-9)')
+        move = input()
+    return int(move)
 
 
 print('Welcome to Tic Tac Toe!')
@@ -144,7 +113,7 @@ while True:
     theBoard = [' '] * 10
     playerLetter, player2Letter = inputPlayerLetter()
     turn = whoGoesFirst()
-    print('The ' + turn + ' will go first.')
+    print('The' + turn + ' will go first.')
     gameIsPlaying = True
 
     while gameIsPlaying:
@@ -169,7 +138,7 @@ while True:
         else:
             # Player2's turn.
             move = getPlayer2Move(theBoard, player2Letter)
-            makeMove(theBoard, computerLetter, move)
+            makeMove(theBoard, player2Letter, move)
 
             if isWinner(theBoard, player2Letter):
                 drawBoard(theBoard)
